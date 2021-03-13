@@ -161,6 +161,7 @@ fn rsa_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     let rng = &mut thread_rng();
 
     if args.flag_verbose {
+        println!("RSA");
         println!("Initializing accumulators, circuits");
     }
     let init_start = Instant::now();
@@ -291,6 +292,7 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     let rng = &mut thread_rng();
 
     if args.flag_verbose {
+        println!("Merkle");
         println!("Initializing accumulators, circuits");
     }
     let init_start = Instant::now();
@@ -340,13 +342,29 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     }
     let param_start = Instant::now();
     let params = {
-        let p = generate_random_parameters(empty_circuit, rng);
-        if args.flag_verbose {
-            println!("Params gen is okay: {:#?}", p.is_ok());
+        if let Some(ref path) = args.flag_iparams {
+            if args.flag_verbose {
+                println!("Loading...");
+            }
+
+            let mut f = std::fs::File::open(path).expect("Error opening params");
+            let p = Parameters::read(&mut f, false).expect("Error parsing params");
+            p
+        } else {
+            let p = generate_random_parameters(empty_circuit, rng);
+            if args.flag_verbose {
+                println!("Params gen is okay: {:#?}", p.is_ok());
+            }
+            assert!(p.is_ok());
+            p.unwrap()
         }
-        assert!(p.is_ok());
-        p.unwrap()
     };
+    if let Some(ref path) = args.flag_oparams {
+        let mut f = std::fs::File::create(path).expect("Error opening param output file");
+        params.write(&mut f).expect("Error writing params");
+        std::process::exit(0);
+    }
+
     let pvk = prepare_verifying_key(&params.vk);
     let param_end = Instant::now();
 
