@@ -165,6 +165,7 @@ fn rsa_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     synth: Synthesizer,
     hash: H,
 ) -> usize {
+    println!("set_bench: RSA");
     let group = RsaQuotientGroup::from_strs("2", RSA_2048);
 
     let n_untouched = if full {
@@ -224,6 +225,7 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     synth: Synthesizer,
     hash: H,
 ) -> usize {
+    println!("set_bench: Merkle");
     let n_untouched = if full {
         (1usize << c).saturating_sub(t)
     } else {

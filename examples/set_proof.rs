@@ -161,7 +161,7 @@ fn rsa_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     let rng = &mut thread_rng();
 
     if args.flag_verbose {
-        println!("RSA");
+        println!("set_proof: RSA");
         println!("Initializing accumulators, circuits");
     }
     let init_start = Instant::now();
@@ -292,7 +292,7 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     let rng = &mut thread_rng();
 
     if args.flag_verbose {
-        println!("Merkle");
+        println!("set_proof: Merkle");
         println!("Initializing accumulators, circuits");
     }
     let init_start = Instant::now();
