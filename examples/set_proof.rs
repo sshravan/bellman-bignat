@@ -9,8 +9,8 @@ use bellman_bignat::hash::circuit::CircuitHasher;
 use bellman_bignat::hash::hashes::{Mimc, Pedersen, Poseidon, Sha256};
 use bellman_bignat::hash::Hasher;
 use bellman_bignat::mp::bignat::nat_to_limbs;
-use bellman_bignat::set::int_set::ExpSet;
 use bellman_bignat::set::int_set::exp::parallel::ParExpComb;
+use bellman_bignat::set::int_set::ExpSet;
 use bellman_bignat::set::merkle::{MerkleSetBench, MerkleSetBenchInputs, MerkleSetBenchParams};
 use bellman_bignat::set::rsa::{SetBench, SetBenchInputs, SetBenchParams};
 use bellman_bignat::set::GenSet;
@@ -320,6 +320,15 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
         hash,
         args.arg_capacity,
     );
+
+    let to_remove_len: usize = merkle_inputs.to_remove.clone().iter().map(Vec::len).sum();
+    let to_insert_len: usize = merkle_inputs.to_insert.clone().iter().map(Vec::len).sum();
+    println!(
+        "Not sure if this is the Witness size: {} ({} + {} + 1)",
+        to_remove_len + to_insert_len + 1,
+        to_remove_len,
+        to_insert_len
+    ); // MerkleSetBenchInputs shows all the fields.
 
     let circuit = MerkleSetBench {
         inputs: Some(merkle_inputs),
