@@ -33,3 +33,7 @@ Test can be run using `cargo`.
    * `rollup_bench` is for measuring the constraint costs of a payment system
       backed by RSA and Merkle accumulators.
 
+```bash
+time cargo +nightly run --release --example set_proof merkle 45 7 --hash poseidon
+time BELLMAN_VERBOSE=1 cargo +nightly run --release --example set_proof merkle 45 7 --hash poseidon
+```
