@@ -368,14 +368,15 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
             p.unwrap()
         }
     };
-    if let Some(ref path) = args.flag_oparams {
-        let mut f = std::fs::File::create(path).expect("Error opening param output file");
-        params.write(&mut f).expect("Error writing params");
-        std::process::exit(0);
-    }
 
     let pvk = prepare_verifying_key(&params.vk);
     let param_end = Instant::now();
+
+    if let Some(ref path) = args.flag_oparams {
+        let mut f = std::fs::File::create(path).expect("Error opening param output file");
+        params.write(&mut f).expect("Error writing params");
+        // std::process::exit(0);
+    }
 
     if args.flag_verbose {
         println!("Generating proof");
