@@ -324,7 +324,7 @@ fn merkle_bench<E: Engine, H: Hasher<F = E::Fr> + CircuitHasher<E = E>>(
     let to_remove_len: usize = merkle_inputs.to_remove.clone().iter().map(Vec::len).sum();
     let to_insert_len: usize = merkle_inputs.to_insert.clone().iter().map(Vec::len).sum();
     println!(
-        "Not sure if this is the Witness size: {} ({} + {} + 1)",
+        "Witness size: {} ({} + {} + 1)",
         to_remove_len + to_insert_len + 1,
         to_remove_len,
         to_insert_len
